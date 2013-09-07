@@ -1277,23 +1277,23 @@
 - (void)xvim_clearHighlightText{
     NSTextView* view = self;
     NSString* string = view.string;
-    [self.layoutManager addTemporaryAttribute:NSBackgroundColorAttributeName value:[NSColor clearColor] forCharacterRange:NSMakeRange(0, string.length)];
+    [self.layoutManager removeTemporaryAttribute:NSBackgroundColorAttributeName forCharacterRange:NSMakeRange(0, string.length)];
 }
 
-- (void)xvim_highlightFoundRanges{
+- (void)xvim_highlightFoundRangesWithColor:(NSColor *)color {
     // Add attributes to the each range
     // There is 2 ways to add attributes
     // One is to add attributes to NSAttributedString(NSTextStorage)
     // One is to add attributes to NSLayoutManager by addTempraryAttributes
     // Later is faster but it is valid only for one drawing action
-    
+
     // Clear current highlight.
     [self xvim_clearHighlightText];
-    // Add yellow highlight
+    // Add highlight
     NSRange visible = [self xvim_visibleRange:self];
     for( NSTextCheckingResult* result in self.foundRanges){
         if( NSIntersectionRange( result.range, visible).length != 0 ){
-            [self.layoutManager addTemporaryAttribute:NSBackgroundColorAttributeName value:[NSColor yellowColor] forCharacterRange:result.range];
+            [self.layoutManager addTemporaryAttribute:NSBackgroundColorAttributeName value:(color ?: [NSColor yellowColor]) forCharacterRange:result.range];
         }
     }
 }

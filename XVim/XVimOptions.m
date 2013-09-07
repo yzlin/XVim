@@ -48,6 +48,7 @@
         _timeoutlen = @"1000";
         _laststatus = 2;
         _hlsearch = NO;
+        _hlsearchcolor = @"yellow";
         _number = NO;
         _vimregex = NO;
     }

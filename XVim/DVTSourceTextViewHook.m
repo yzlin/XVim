@@ -187,7 +187,28 @@
             XVimMotion* lastSearch = [XVim.instance.searcher motionForRepeatSearch];
             if( nil != lastSearch.regex ){
                 [view xvim_updateFoundRanges:lastSearch.regex withOption:lastSearch.option];
-                [view xvim_highlightFoundRanges];
+                NSString *hlsearchcolor = XVim.instance.options.hlsearchcolor;
+                NSColor *highlightColor = nil;
+
+                if ([hlsearchcolor hasPrefix:@"#"]) { // by hex color: #FFCC22
+                    NSString *colorHex = [hlsearchcolor substringWithRange:NSMakeRange(1, hlsearchcolor.length - 1)];
+
+                    unsigned int colorCode = 0;
+
+                    if (colorHex.length > 0) {
+                        NSScanner *scanner = [NSScanner scannerWithString:colorHex];
+                        (void)[scanner scanHexInt:&colorCode];
+                    }
+
+                    highlightColor = [NSColor colorWithDeviceRed:((colorCode >> 16) & 0xFF) / 255.0
+                                                           green:((colorCode >>  8) & 0xFF) / 255.0
+                                                            blue:((colorCode      ) & 0xFF) / 255.0
+                                                           alpha:1.0];
+                } else { // by color name: yellow, red, ...
+                    highlightColor = [[NSColorList colorListNamed:@"Apple"] colorWithKey:hlsearchcolor.capitalizedString];
+                }
+
+                [view xvim_highlightFoundRangesWithColor:highlightColor];
             }
         }else{
             [view xvim_clearHighlightText];
