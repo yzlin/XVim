@@ -162,6 +162,7 @@ The dot command ('.') is supported.
   [no]smartcase |
   [no]number |
   [no]hlsearch |
+  hlsearchcolor | Support hex string with prefix '#' like "#CCFF22" or color name like "yellow".
   guioptions | See below
   timeoutlen | The time in milliseconds that is waited for mapped key sequence to complete (default 1000)
   laststatus | 0 or 1 : status line is hidden, 2 : status line is displayed  (default 2)
